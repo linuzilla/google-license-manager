@@ -1,0 +1,19 @@
+name: Google License Manager
+
+# log-level: debug, notice, warning, error, fatal
+log-level: notice
+database-file: licenses-records.db
+
+#  Google Product and SKU IDs
+#  https://developers.google.com/admin-sdk/licensing/v1/how-tos/products
+google:
+  domain: "example.com"
+  admin: "admin@example.com"
+  customer-id: "your.customer.id"
+  product-id: "101037"
+  product-sku-id: "1010370001"
+  credential-file: credential.json
+  scopes:
+    - "https://www.googleapis.com/auth/apps.licensing"
+    - "https://www.googleapis.com/auth/admin.directory.customer.readonly"
+    - "https://www.googleapis.com/auth/admin.directory.user.readonly"
