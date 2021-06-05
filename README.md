@@ -14,6 +14,12 @@ func main() {
 }
 ```
 
+## Build your own version
+```bash
+go mod init
+go mod tidy
+go build
+```
 ## Simple configuration (application.yml)
 ```yaml
 name: Google License Manager
