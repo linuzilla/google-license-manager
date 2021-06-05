@@ -16,7 +16,7 @@ Google Workspace for Education: Teaching and Learning Upgrade 可以申請一次
 ## 工作原理及風險
 
 利用 [Google Cloud Platform](https://console.cloud.google.com) 建立 project，開啟 Enterprise License Manager API，然後產生一個 Service Account，
-產生一組金鑰（以 json 格式下載），在 Admin Console 將此金鑰的 client id 註冊到網域的 domain-wide delegation，並附予
+產生一組金鑰（以 json 格式下載），在 Admin Console 將此金鑰的 client id 註冊到網域的 domain-wide delegation，並賦予
 https://www.googleapis.com/auth/apps.licensing 的 scope
 
 注意：本程式支援用戶名的取得，但這需額外的 API 及 scope，需要的 API 為 Admin SDK API，scope 為
@@ -24,15 +24,16 @@ https://www.googleapis.com/auth/admin.directory.user.readonly
 
 當這些都準備好了，透過這程式，加上金鑰，就可以直接對授權的人員做管理
 
-如果金鑰有遺失，到 Admin Console 把該筆記錄刪掉，並到 Gpogle Cloud Platform 刪掉這把金鑰即可。
+如果金鑰有遺失，到 Admin Console 把該筆記錄刪掉，並到 Google Cloud Platform 刪掉這把金鑰即可。
 
 ## 程式運作模式
 
 程式運作需有設定檔跟金鑰，另外會產生一個資料檔。資料檔是為了記錄異動用的，另外，資料檔也提供註解帳號的資訊，否則（如果不開 Admin SDK）時，帳號是無法顯示擁有者的姓名。
 
-管理者可以把設定檔封裝在資料檔中，用 aes 加密保護，採用這個方式的話，程式開啟時，會詢問密碼，以解密設定跟鑰。用封裝後，就只要提供資料檔給其它管理者即可。
+管理者可以把設定檔封裝在資料檔中，用 aes 加密保護，採用這個方式的話，程式開啟時，會詢問密碼，以解密設定跟金鑰。封裝後，就只要提供資料檔給其它管理者即可，不必再有設定檔及金鑰檔，
+因為這些都以加密的型式放在資料檔中。
 
-Go 是跨平台的，所以程式可以在 Windows, Linux, 跟 Mac 上執行，原本想用 sqlite 做資料庫，但因用到 cgc，在 Windows 上實現有點複雜，所以選用是純 GO 語言的程式庫。
+Go 是跨平台的，所以程式可以在 Windows, Linux, 跟 Mac 上執行，原本想用 sqlite 做資料庫，但因用到 cgo，在 Windows 上實現有點複雜，所以選用是純 GO 語言的程式庫。
 
 程式使用介面是 command line 的，所以採下指令的方式運作。cli 支援 completion 跟 history 功能。另外，也可以結合 shell 來下指令，不需用程式提供的 cli。
 
@@ -42,16 +43,16 @@ Go 是跨平台的，所以程式可以在 Windows, Linux, 跟 Mac 上執行，�
 [Google 的文件](https://developers.google.com/admin-sdk/licensing/v1/how-tos/products)
 
 其中，Google Workspace for Education: Teaching and Learning Upgrade 的 Product Id 為 101037
-Product Sku ID 為 1010370001。
+Product SKU ID 為 1010370001。
 
 scopes 的部份，如果沒有授權 Admin SDK 的話，請把 "https://www.googleapis.com/auth/admin.directory.user.readonly" 拿掉。
 
-如果程式執行時，無法正確讀取 application.yml 時，程式會假設跑在封裝模式，預設的資料檔為 licenses-users.db。
+如果程式執行時，無法正確讀取 application.yml （YAML 格式）時，程式會假設跑在封裝模式，預設的資料檔為 licenses-users.db。
 
 ```yaml
 name: Google License Manager
 
-# log-level: debug, notice, warning, success, failed, error, fatal
+# log-level: debug, notice, warning, error, fatal
 log-level: notice
 database-file: licenses-users.db
 
