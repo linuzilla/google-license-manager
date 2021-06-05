@@ -1,4 +1,4 @@
-package main
+package google_license_manager
 
 import (
 	"fmt"
@@ -23,7 +23,7 @@ import (
 	"syscall"
 )
 
-func main() {
+func Main() {
 	optionDefinition := getopt.Options{
 		Description: constants.VERSION,
 		Definitions: getopt.Definitions{

@@ -21,5 +21,5 @@ vendor/
 *.json
 google-license-manager
 
-!application-sample.yml
-!credential-sample.json
+!main/application-sample.yml
+!main/credential-sample.json
